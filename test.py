@@ -124,7 +124,7 @@ def eliminar_datos_proyecciones():
         conexion = sqlite3.connect("agricultura_test.db")
         cursor = conexion.cursor()
         cursor.execute('DELETE FROM proyecciones_test')
-        print('Se han eliminado', cursor.rowcount, 'filas de la tabla.')
+        #print('Se han eliminado', cursor.rowcount, 'filas de la tabla.')
         conexion.commit()
         conexion.close()
 
@@ -134,11 +134,11 @@ def consultar_trigo():
         ##  print  trigos
         cursor.execute('select * from proyecciones_test where (cultivo=:t)', {'t':'Trigo'})
         busqueda = cursor.fetchall()
-        print("Tabla de trigos: ")
+        print("\nTabla de trigos: ")
         for i in busqueda:
             print(i)
 
-        ##  print fila especifica
+        ##  print fila especifica: ultimo año
         cursor.execute('select * from proyecciones_test where (cultivo=:t and periodo=:p)', {'t':'Trigo','p':'2022/2023'})
         busqueda2 = cursor.fetchall()
 
@@ -151,14 +151,38 @@ def consultar_trigo():
                 elif index == 4:
                     valor_actual_produccion = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
 
-        conexion.close()
+        ##  print fila especifica: año anterior
+        cursor.execute('select * from proyecciones_test where (cultivo=:t and periodo=:p)', {'t':'Trigo','p':'2021/2022'})
+        busqueda3 = cursor.fetchall()
 
+        for item in busqueda3:
+            for index,i in enumerate(item):
+                if index == 2:
+                    valor_ant_sembrado = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
+                elif index == 3:
+                    valor_ant_rinde = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
+                elif index == 4:
+                    valor_ant_produccion = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
+
+        conexion.close()
+        ### CALCULAR VARIACION
+        # variacion = ((val_actual - val_anterior) / val_anterior) * 100
+        variacion_sembrado = ((valor_actual_sembrado - valor_ant_sembrado) / valor_ant_sembrado) * 100
+        variacion_rinde = ((valor_actual_rinde - valor_ant_rinde) / valor_ant_rinde) * 100
+        variacion_produccion = ((valor_actual_produccion - valor_ant_produccion) / valor_ant_produccion) * 100
+        
+        print("\n")
+        print(f"Variación del area sembrada en base al anio anterior: {round(variacion_sembrado, 1)}%\n")
+        print(f"Variación rindes en base al anio anterior: {round(variacion_rinde, 1)}%\n")
+        print(f"Variación de la producción en base al anio anterior: {round(variacion_produccion, 1)}%\n")
 
 ##########################################3
 
 
 while True:
+    print("*********************************************")
     cargar_datos_proyecciones()
+    print("*********************************************\n")
     #####
     print('Ingresa la opción deseada: ')
     print("""
