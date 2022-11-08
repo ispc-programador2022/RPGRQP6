@@ -131,11 +131,26 @@ def eliminar_datos_proyecciones():
 def consultar_trigo():
         conexion = sqlite3.connect("agricultura_test.db")
         cursor = conexion.cursor()
-        ##  print fila especifica
+        ##  print  trigos
         cursor.execute('select * from proyecciones_test where (cultivo=:t)', {'t':'Trigo'})
         busqueda = cursor.fetchall()
+        print("Tabla de trigos: ")
         for i in busqueda:
             print(i)
+
+        ##  print fila especifica
+        cursor.execute('select * from proyecciones_test where (cultivo=:t and periodo=:p)', {'t':'Trigo','p':'2022/2023'})
+        busqueda2 = cursor.fetchall()
+
+        for item in busqueda2:
+            for index,i in enumerate(item):
+                if index == 2:
+                    valor_actual_sembrado = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
+                elif index == 3:
+                    valor_actual_rinde = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
+                elif index == 4:
+                    valor_actual_produccion = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
+
         conexion.close()
 
 
