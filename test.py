@@ -2,9 +2,11 @@ from bs4 import BeautifulSoup
 import requests
 import sqlite3
 import pandas as pd
-
+import platform
+import os
 
 #############################################################################
+###### Web Scraping "www.bcr.com.ar" ######
 def cargar_datos_proyecciones():
 
     html_text = requests.get('https://www.bcr.com.ar/es/mercados/gea/estimaciones-nacionales-de-produccion/estimaciones').text
@@ -88,7 +90,7 @@ def cargar_datos_proyecciones():
     soja_anio_anterior = (listado_header_s[0], listado_anio_anterior_s[0], listado_anio_anterior_s[1].replace('MILLONES HA', ' MILLONES HA'), listado_anio_anterior_s[2].replace('QQ/HA', ' QQ/HA'), listado_anio_anterior_s[3].replace('MILLONES TN', ' MILLONES TN'))
 
 #################################################################################
-#########  BASE DE DATOS
+#########  BASE DE DATOS ########
     conexion = sqlite3.connect("agricultura_test.db")
     #Para crear una tabla, creamos una variable de tipo cursor
     cursor = conexion.cursor()
@@ -325,6 +327,7 @@ def consultar_soja():
 
 
 ##########################################################################################
+###### Web Scraping "www.inta.gob.ar" ######
 def cargar_datos_margenes():
     html_text = requests.get('https://inta.gob.ar/documentos/indicadores-economicos-e-informes-tecnicos').text
     #print(html_text) #response 200
@@ -388,7 +391,7 @@ def cargar_datos_margenes():
     row6 = (list_fila_6[0],list_fila_6[1],list_fila_6[2], list_fila_6[3])
 
     #######################################
-    ##BASE DE DATOS
+    ## BASE DE DATOS ##
     conexion = sqlite3.connect("agricultura_test.db")
     #Para crear una tabla, creamos una variable de tipo cursor
     cursor = conexion.cursor()
@@ -396,7 +399,7 @@ def cargar_datos_margenes():
     cursor.execute(f"create table if not exists margenes_test (Periodo VARCHAR(100), Elaboracion_estimada1 VARCHAR(100), Elaboracion_estimada2 VARCHAR(100), Obtenidos VARCHAR(100))")
 
 
-    # Ingresar y leer varios registros al mismo tiemp5
+    # Ingresar y leer varios registros al mismo tiempo
     # 
     margenes_gral = [
         row1,
@@ -422,6 +425,7 @@ def eliminar_datos_margenes():
         conexion.commit()
         conexion.close()
 #######################################################################################
+###### Web Scraping "www.bolsadecereales.com" ######
 
 def cotizacion_trigo():
     cotizaciones_trigo = pd.read_html('https://www.bolsadecereales.com')[0]
@@ -476,7 +480,20 @@ def guardar_datos():
         
     conexion.close()
 
+def clearscreen():
+    if platform.system() == "Windows":
+        os.system('cls')
+    else:
+        os.system('clear')  
+
+def pressenter():
+    print("*********************************************")
+    print("Presione ENTER para continuar")
+    input()
+    clearscreen()
+
 #############################################################################################################
+### Menu del usuario ###
 #############################################################################################################
 
 while True:
@@ -516,21 +533,25 @@ while True:
         print(df.head())
         eliminar_datos_proyecciones()
         eliminar_datos_margenes()
+        pressenter()
     
     elif opcion == '2':
         consultar_trigo()
         eliminar_datos_proyecciones()
         eliminar_datos_margenes()
+        pressenter()
 
     elif opcion == '3':
         consultar_maiz()
         eliminar_datos_proyecciones()
         eliminar_datos_margenes()
+        pressenter()
 
     elif opcion == '4':
         consultar_soja()
         eliminar_datos_proyecciones()
         eliminar_datos_margenes()
+        pressenter()
     
     elif opcion == '5':
         
@@ -540,18 +561,22 @@ while True:
         print(">>> Margenes de los granos principales: ")
         print(df.head())
         eliminar_datos_margenes()
+        pressenter()
     
     elif opcion == '6':
         print(cotizacion_trigo())
         eliminar_datos_margenes()
+        pressenter()
 
     elif opcion == '7':
         print(cotizacion_maiz())
         eliminar_datos_margenes()
+        pressenter()
 
     elif opcion == '8':
         print(cotizacion_soja())
         eliminar_datos_margenes()
+        pressenter()
 
     else:
         print('Hasta luego!')
