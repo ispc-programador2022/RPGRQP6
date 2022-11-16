@@ -1,7 +1,7 @@
 # RPGRQP6
-##Proyecto GAMA
+## Proyecto GAMA
 
-##INFORME Proyecto RPGRQP6
+## INFORME Proyecto RPGRQP6
 
 El presente proyecto fue realizado con la idea de extraer datos de los principales Granos y sus rindes a nivel Nacional en Argentina, 
 debido a la gran diversidad de datos sobre los mismos se decidio relevar los rendimientos por hectarea y estimaciones de produccion para
