@@ -3,6 +3,10 @@ import pandas as pd
 import funciones
 
 
+#############################################################################################################
+### Menu del usuario ###
+#############################################################################################################
+
 while True:
     print("*********************************************")
     funciones.cargar_datos_proyecciones()
@@ -29,32 +33,31 @@ while True:
 
         conexion = sqlite3.connect("agricultura_test.db")
         cursor = conexion.cursor()
-        # haceoms consulta a la bd
-        #for row in cursor.execute('select * from proyecciones_test'):
-        #    print(row)
 
         df = pd.read_sql_query('select * from proyecciones_test', conexion)
-        # Ver  el resultado de la consulta SQL está
-        # almacenado en el DataFrame
         print(">>> Proyecciones de la producción de granos: ")
         print(df.head())
         funciones.eliminar_datos_proyecciones()
         funciones.eliminar_datos_margenes()
+        funciones.pressenter()
     
     elif opcion == '2':
         funciones.consultar_trigo()
         funciones.eliminar_datos_proyecciones()
         funciones.eliminar_datos_margenes()
+        funciones.pressenter()
 
     elif opcion == '3':
         funciones.consultar_maiz()
         funciones.eliminar_datos_proyecciones()
         funciones.eliminar_datos_margenes()
+        funciones.pressenter()
 
     elif opcion == '4':
         funciones.consultar_soja()
         funciones.eliminar_datos_proyecciones()
         funciones.eliminar_datos_margenes()
+        funciones.pressenter()
     
     elif opcion == '5':
         
@@ -64,22 +67,25 @@ while True:
         print(">>> Margenes de los granos principales: ")
         print(df.head())
         funciones.eliminar_datos_margenes()
+        funciones.pressenter()
     
     elif opcion == '6':
         print(funciones.cotizacion_trigo())
         funciones.eliminar_datos_margenes()
+        funciones.pressenter()
 
     elif opcion == '7':
         print(funciones.cotizacion_maiz())
         funciones.eliminar_datos_margenes()
+        funciones.pressenter()
 
     elif opcion == '8':
         print(funciones.cotizacion_soja())
         funciones.eliminar_datos_margenes()
+        funciones.pressenter()
 
     else:
         print('Hasta luego!')
         funciones.eliminar_datos_proyecciones()
         funciones.eliminar_datos_margenes()
         break
-

@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 import sqlite3
 import pandas as pd
+import os
+import platform
+
 
 
 def cargar_datos_proyecciones():
@@ -459,3 +462,15 @@ def cotizacion_soja():
     return cs
 
 #############################################
+
+def clearscreen():
+    if platform.system() == "Windows":
+        os.system('cls')
+    else:
+        os.system('clear')  
+
+def pressenter():
+    print("*********************************************")
+    print("Presione ENTER para continuar")
+    input()
+    clearscreen()
