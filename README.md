@@ -31,6 +31,7 @@ Entre los periodos 2021/2022 y 2022/2023 existe una variacion del 6.2% del area 
 - Sqlite3
 - requests
 - Beautiful Soup
+- Matplotlib
 
 #### Se ejecuta el archivo **app.py**
 

@@ -67,21 +67,25 @@ while True:
         print(">>> Margenes de los granos principales: ")
         print(df.head())
         funciones.eliminar_datos_margenes()
+        funciones.eliminar_datos_proyecciones()
         funciones.pressenter()
     
     elif opcion == '6':
         print(funciones.cotizacion_trigo())
         funciones.eliminar_datos_margenes()
+        funciones.eliminar_datos_proyecciones()
         funciones.pressenter()
 
     elif opcion == '7':
         print(funciones.cotizacion_maiz())
         funciones.eliminar_datos_margenes()
+        funciones.eliminar_datos_proyecciones()
         funciones.pressenter()
 
     elif opcion == '8':
         print(funciones.cotizacion_soja())
         funciones.eliminar_datos_margenes()
+        funciones.eliminar_datos_proyecciones()
         funciones.pressenter()
 
     else:

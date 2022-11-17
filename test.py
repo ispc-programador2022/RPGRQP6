@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import sqlite3
 import pandas as pd
+import matplotlib.pyplot as plt
 import platform
 import os
 
@@ -129,12 +130,15 @@ def eliminar_datos_proyecciones():
 def consultar_trigo():
         conexion = sqlite3.connect("agricultura_test.db")
         cursor = conexion.cursor()
-        ##  print  trigos
-        #cursor.execute('select * from proyecciones_test where (cultivo=:t)', {'t':'Trigo'})
-        #busqueda = cursor.fetchall()
-        #print("\nTabla de trigos: ")
-        #for i in busqueda:
-        #    print(i)
+
+        ### para el grafico
+        list_periodo =[]
+        for row in cursor.execute('select * from proyecciones_test where (cultivo=:t)', {'t':'Trigo'}):
+            for index,item in enumerate(row):
+                if index == 1:
+                    list_periodo.append(item)
+        ### 
+
         print("\nTabla de proyecciones del Trigo:")
         df = pd.read_sql_query("select * from proyecciones_test where Cultivo = 'Trigo'", conexion)
         print(df.head())
@@ -165,6 +169,8 @@ def consultar_trigo():
                 elif index == 4:
                     valor_ant_produccion = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
 
+        dict_trigo = {'Cultivo':'Trigo', 'Periodo': list_periodo, 'Area':[valor_actual_sembrado,valor_ant_sembrado], 'Rinde': [valor_actual_produccion, valor_ant_rinde], 'Produccion':[valor_actual_produccion, valor_ant_produccion]}
+
         conexion.close()
         ### CALCULAR VARIACION
         # variacion = ((val_actual - val_anterior) / val_anterior) * 100
@@ -177,18 +183,26 @@ def consultar_trigo():
         print(f"Variación rindes en base al anio anterior: {round(variacion_rinde, 1)}%\n")
         print(f"Variación de la producción en base al anio anterior: {round(variacion_produccion, 1)}%\n")
 
+        print("------ Grafico:")
+        # creating dataframe
+        graf = pd.DataFrame(dict_trigo)
+        # plotting graph
+        graf.plot(x="Periodo", y=["Area", "Rinde","Produccion"], kind="bar")
+        plt.show()
+
+
 #######################################################################################
 def consultar_maiz():
         conexion = sqlite3.connect("agricultura_test.db")
         cursor = conexion.cursor()
-        ##  print  trigos
-        """
-        cursor.execute('select * from proyecciones_test where (cultivo=:m)', {'m':'Maiz'})
-        busqueda = cursor.fetchall()
-        print("\nTabla del maiz: ")
-        for i in busqueda:
-            print(i)
-        """
+        
+        ### para el grafico
+        list_periodo =[]
+        for row in cursor.execute('select * from proyecciones_test where (cultivo=:m)', {'m':'Maiz'}):
+            for index,item in enumerate(row):
+                if index == 1:
+                    list_periodo.append(item)
+        ### 
 
         print("\nTabla de proyecciones del Maiz:")
         df = pd.read_sql_query("select * from proyecciones_test where Cultivo = 'Maiz'", conexion)
@@ -229,6 +243,8 @@ def consultar_maiz():
                 elif index == 4:
                     valor_ant_produccion = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
 
+        dict_maiz = {'Cultivo':'Maiz', 'Periodo': list_periodo, 'Area':[valor_actual_sembrado,valor_ant_sembrado], 'Rinde': [valor_actual_produccion, valor_ant_rinde], 'Produccion':[valor_actual_produccion, valor_ant_produccion]}
+
         conexion.close()
         #### CALCULAR VARIACION
         # variacion = ((val_actual - val_anterior) / val_anterior) * 100
@@ -252,18 +268,27 @@ def consultar_maiz():
             variacion_produccion = ((valor_actual_produccion - valor_ant_produccion) / valor_ant_produccion) * 100
             print(f"Variación de la producción en base al anio anterior: {round(variacion_produccion, 1)}%\n")
 
+        print("------ Grafico:")
+        # creating dataframe
+        graf = pd.DataFrame(dict_maiz)
+        # plotting graph
+        graf.plot(x="Periodo", y=["Area", "Rinde","Produccion"], kind="bar")
+        plt.show()
+
+
 ##########################################################################################3
 def consultar_soja():
         conexion = sqlite3.connect("agricultura_test.db")
         cursor = conexion.cursor()
-        ##  print  trigos
-        """
-        cursor.execute('select * from proyecciones_test where (cultivo=:s)', {'s':'Soja'})
-        busqueda = cursor.fetchall()
-        print("\nTabla de la soja: ")
-        for i in busqueda:
-            print(i)
-        """
+        
+        ### para el grafico
+        list_periodo =[]
+        for row in cursor.execute('select * from proyecciones_test where (cultivo=:s)', {'s':'Soja'}):
+            for index,item in enumerate(row):
+                if index == 1:
+                    list_periodo.append(item)
+        ### 
+
         print("\nTabla de proyecciones de la Soja:")
         df = pd.read_sql_query("select * from proyecciones_test where Cultivo = 'Soja'", conexion)
         print(df.head())
@@ -302,6 +327,8 @@ def consultar_soja():
                 elif index == 4:
                     valor_ant_produccion = float(i.strip(" QQ/ MILLONES HA TA").replace(',','.'))
 
+        dict_soja = {'Cultivo':'Soja', 'Periodo': list_periodo, 'Area':[valor_actual_sembrado,valor_ant_sembrado], 'Rinde': [valor_actual_produccion, valor_ant_rinde], 'Produccion':[valor_actual_produccion, valor_ant_produccion]}
+
         conexion.close()
         ### CALCULAR VARIACION
         # variacion = ((val_actual - val_anterior) / val_anterior) * 100
@@ -325,6 +352,12 @@ def consultar_soja():
             variacion_produccion = ((valor_actual_produccion - valor_ant_produccion) / valor_ant_produccion) * 100
             print(f"Variación de la producción en base al anio anterior: {round(variacion_produccion, 1)}%\n")
 
+        print("------ Grafico:")
+        # creating dataframe
+        graf = pd.DataFrame(dict_soja)
+        # plotting graph
+        graf.plot(x="Periodo", y=["Area", "Rinde","Produccion"], kind="bar")
+        plt.show()
 
 ##########################################################################################
 ###### Web Scraping "www.inta.gob.ar" ######
@@ -434,6 +467,16 @@ def cotizacion_trigo():
     ct = ct.drop('Var', axis=1)
     ct = ct.drop('Posición', axis=1)
     ct = ct.drop(0, axis=0)
+    ct = ct.drop(3, axis=0)
+    ct = ct.drop(5, axis=0)
+    ct = ct.drop(7, axis=0)
+    ct = ct.drop(9, axis=0)
+    print("---- Grafico ----")
+    x  = ct['Mercado']
+    y = ct['Precio']
+    plt.barh(x,y,color=['black', 'red', 'lightgreen', 'blue', 'yellow','violet'])
+    plt.show()
+    print("\n")
     return ct
 
 
@@ -444,6 +487,17 @@ def cotizacion_maiz():
     cm = cm.drop('Var', axis=1)
     cm = cm.drop('Posición', axis=1)
     cm = cm.drop(0, axis=0)
+    cm = cm.drop(3, axis=0)
+    cm = cm.drop(5, axis=0)
+    cm = cm.drop(7, axis=0)
+    cm = cm.drop(9, axis=0)
+
+    print("---- Grafico ----")
+    x  = cm['Mercado']
+    y = cm['Precio']
+    plt.barh(x,y,color=['black', 'red', 'lightgreen', 'blue', 'yellow','violet'])
+    plt.show()
+    print("\n")
     return cm
 
 
@@ -455,31 +509,21 @@ def cotizacion_soja():
     cs = cs.drop('Var', axis=1)
     cs = cs.drop('Posición', axis=1)
     cs = cs.drop(0, axis=0)
+    cs = cs.drop(3, axis=0)
+    cs = cs.drop(5, axis=0)
+    cs = cs.drop(7, axis=0)
+    cs = cs.drop(9, axis=0)
+
+    print("---- Grafico ----")
+    x  = cs['Mercado']
+    y = cs['Precio']
+    plt.barh(x,y,color=['black', 'red', 'lightgreen', 'blue', 'yellow','violet'])
+    plt.show()
+    print("\n")
     return cs
 
 ##############################################################################################
-### Guardar en CSV las proyecciones de la producción
-
-def guardar_datos():
-    conexion = sqlite3.connect("agricultura_test.db")
-    cursor = conexion.cursor()
-    #### Guardar en csv
-    ### -> en nombre de ruta poner la ruta de donde esta alojado en archivo excel!!!!!!!!!!!!!!!!!!
-    nombre_ruta = '/home/car/Escritorio/tp-ispc/test2/estimaciones_produccion.csv'   ### <- ACÁ 
-    f = open(nombre_ruta, 'a+')
-    # haceoms consulta a la bd
-    for row in cursor.execute('select * from proyecciones_test'):
-        print(row)
-        tup = []
-        for item in row:
-            tup.append(item.replace(',','.'))
-            
-        f.write(",".join(tup))
-        f.write('\n')
-    f.close()
-        
-    conexion.close()
-
+## Modificaciones para el menu, pausa ##
 def clearscreen():
     if platform.system() == "Windows":
         os.system('cls')
@@ -522,10 +566,6 @@ while True:
 
         conexion = sqlite3.connect("agricultura_test.db")
         cursor = conexion.cursor()
-        # haceoms consulta a la bd
-        #for row in cursor.execute('select * from proyecciones_test'):
-        #    print(row)
-
         df = pd.read_sql_query('select * from proyecciones_test', conexion)
         # Ver  el resultado de la consulta SQL está
         # almacenado en el DataFrame
@@ -561,21 +601,25 @@ while True:
         print(">>> Margenes de los granos principales: ")
         print(df.head())
         eliminar_datos_margenes()
+        eliminar_datos_proyecciones()
         pressenter()
     
     elif opcion == '6':
         print(cotizacion_trigo())
         eliminar_datos_margenes()
+        eliminar_datos_proyecciones()
         pressenter()
 
     elif opcion == '7':
         print(cotizacion_maiz())
         eliminar_datos_margenes()
+        eliminar_datos_proyecciones()
         pressenter()
 
     elif opcion == '8':
         print(cotizacion_soja())
         eliminar_datos_margenes()
+        eliminar_datos_proyecciones()
         pressenter()
 
     else:
