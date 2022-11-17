@@ -473,7 +473,7 @@ def cotizacion_trigo():
     ct = ct.drop(9, axis=0)
     print("---- Grafico ----")
     x  = ct['Mercado']
-    y = ct['Precio']
+    y = ct['Precio'].astype({'Precio':'float'})
     plt.barh(x,y,color=['black', 'red', 'lightgreen', 'blue', 'yellow','violet'])
     plt.show()
     print("\n")
@@ -494,7 +494,7 @@ def cotizacion_maiz():
 
     print("---- Grafico ----")
     x  = cm['Mercado']
-    y = cm['Precio']
+    y = cm['Precio'].astype({'Precio':'float'})
     plt.barh(x,y,color=['black', 'red', 'lightgreen', 'blue', 'yellow','violet'])
     plt.show()
     print("\n")
@@ -516,7 +516,7 @@ def cotizacion_soja():
 
     print("---- Grafico ----")
     x  = cs['Mercado']
-    y = cs['Precio']
+    y = cs['Precio'].astype({'Precio':'float'})
     plt.barh(x,y,color=['black', 'red', 'lightgreen', 'blue', 'yellow','violet'])
     plt.show()
     print("\n")
