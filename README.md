@@ -38,3 +38,12 @@ Entre los periodos 2021/2022 y 2022/2023 existe una variacion del 6.2% del area 
 Si se quiere imprimir las tablas, hay que ejecutar el **guardar_csv.py** siguiendo las indicaciones que hay en el mismo.
 
 <sup>El archivo *test.py* es solo una prueba todo en uno, tambien se puede ejecutar solo.</sup>
+
+
+### Integrantes del Proyecto:
+- **Carol Paves**
+- **Agustín Rizzo**
+- **Mariano Pineda**
+- **Sebastian Righi**
+- **Camilo Quiroga**
+
