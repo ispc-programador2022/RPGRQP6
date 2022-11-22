@@ -46,4 +46,4 @@ Si se quiere imprimir las tablas, hay que ejecutar el **guardar_csv.py** siguien
 - **Mariano Pineda**
 - **Sebastian Righi**
 - **Camilo Quiroga**
-
+- **Ezequiel Robles**
